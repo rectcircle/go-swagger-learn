@@ -1,0 +1,82 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "这是描述",
+    "title": "go swagger learn",
+    "termsOfService": "这是服务条款",
+    "version": "0.0.1"
+  },
+  "host": "localhost",
+  "paths": {
+    "/users/{id}": {
+      "get": {
+        "description": "这是接口的详细描述",
+        "tags": [
+          "users"
+        ],
+        "summary": "通过 ID 获取 User 信息",
+        "operationId": "GetOneUser",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "ID",
+            "description": "User ID 参数",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetUserResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "description": "User 实体",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "User ID",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "description": "用户名",
+          "type": "string",
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "github.com/rectcircle/go-swagger-learn/domain"
+    }
+  },
+  "responses": {
+    "GetUserResponse": {
+      "description": "",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "错误码",
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Code"
+          },
+          "data": {
+            "$ref": "#/definitions/User"
+          },
+          "message": {
+            "description": "错误信息",
+            "type": "string",
+            "x-go-name": "Message"
+          }
+        }
+      }
+    }
+  }
+}
