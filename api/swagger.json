@@ -50,6 +50,16 @@
           "description": "用户名",
           "type": "string",
           "x-go-name": "Name"
+        },
+        "status": {
+          "description": "状态\nactive StatusActive\ninactive StatusInactive",
+          "type": "string",
+          "enum": [
+            "active",
+            "inactive"
+          ],
+          "x-go-enum-desc": "active StatusActive\ninactive StatusInactive",
+          "x-go-name": "Status"
         }
       },
       "x-go-package": "github.com/rectcircle/go-swagger-learn/domain"

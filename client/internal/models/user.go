@@ -7,9 +7,12 @@ package models
 
 import (
 	"context"
+	"encoding/json"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // User User 实体
@@ -22,10 +25,67 @@ type User struct {
 
 	// 用户名
 	Name string `json:"name,omitempty"`
+
+	// 状态
+	// active StatusActive
+	// inactive StatusInactive
+	// Enum: [active inactive]
+	Status string `json:"status,omitempty"`
 }
 
 // Validate validates this user
 func (m *User) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateStatus(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+var userTypeStatusPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["active","inactive"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		userTypeStatusPropEnum = append(userTypeStatusPropEnum, v)
+	}
+}
+
+const (
+
+	// UserStatusActive captures enum value "active"
+	UserStatusActive string = "active"
+
+	// UserStatusInactive captures enum value "inactive"
+	UserStatusInactive string = "inactive"
+)
+
+// prop value enum
+func (m *User) validateStatusEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, userTypeStatusPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *User) validateStatus(formats strfmt.Registry) error {
+	if swag.IsZero(m.Status) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateStatusEnum("status", "body", m.Status); err != nil {
+		return err
+	}
+
 	return nil
 }
 

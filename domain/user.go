@@ -4,6 +4,14 @@ import (
 	"context"
 )
 
+// swagger:enum Status
+type Status string
+
+const (
+	StatusActive   Status = "active"
+	StatusInactive Status = "inactive"
+)
+
 // User 实体
 // swagger:model User
 type User struct {
@@ -11,6 +19,8 @@ type User struct {
 	ID int `json:"id"`
 	// 用户名
 	Name string `json:"name"`
+	// 状态
+	Status Status `json:"status"`
 }
 
 type UserService interface {
